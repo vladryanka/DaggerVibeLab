@@ -49,24 +49,43 @@ import androidx.compose.runtime.getValue
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.example.services.data.AppComponent
+import com.example.services.data.AppModule
 import com.example.services.data.CatWorker
 import com.example.services.data.Fact
+import com.example.services.data.Provider
 import com.google.gson.Gson
+import dagger.internal.DaggerCollections
+import javax.inject.Inject
+
 
 class MainActivity : ComponentActivity() {
-    private val workRequest = OneTimeWorkRequest.Builder(CatWorker::class.java).build()
-    private val viewModel: View by viewModels()
+    @Inject
+    lateinit var viewModel: View
+
+    @Inject
+    lateinit var workRequest: OneTimeWorkRequest
+
+    @Inject
+    lateinit var context: Context
+
+
     private lateinit var receiver: BroadcastReceiver
     private lateinit var observer: Observer<WorkInfo>
     private lateinit var workDetailInfo: LiveData<WorkInfo>
     private lateinit var navController: NavHostController
 
+    private lateinit var appComponent: AppComponent
+    private lateinit var provider: Provider
 
     @SuppressLint("InlinedApi")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        appComponent.inject(provider)
+        appComponent.inject(viewModel)
+
         setContent {
             var navController = rememberNavController()
             ServicesApp(navController, viewModel, workRequest)

@@ -10,11 +10,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class View : ViewModel() {
+class View @Inject constructor(private val context: Context, private val gson: Gson) : ViewModel() {
 
     fun service(context: Context) {
         viewModelScope.launch {

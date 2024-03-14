@@ -1,6 +1,7 @@
 package com.example.services.data
 
-import android.app.Service
+import android.app.Service.START_NOT_STICKY
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import com.google.gson.Gson
@@ -10,17 +11,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
+import javax.inject.Inject
 
-class Provider : Service() {
+class Provider @Inject constructor(
+    private val context: Context
+) {
     private val link = "https://catfact.ninja/facts?limit=6"
 
-    private val cast = Intent("com.example.Services")
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+    fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         cat()
         return START_NOT_STICKY
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
@@ -41,14 +45,15 @@ class Provider : Service() {
                         length = (it["length"] as Double).toInt()
                     )
                 }
+
                 withContext(Dispatchers.Main) {
-                    cast.putExtra("catFacts", Gson().toJson(c))
-                    sendBroadcast(cast)
+                    val intent = Intent("com.example.Services")
+                    intent.putExtra("catFacts", Gson().toJson(c))
+                    context.sendBroadcast(intent)
                 }
 
             } catch (e: Exception) {
                 e.printStackTrace()
-
             }
         }
     }

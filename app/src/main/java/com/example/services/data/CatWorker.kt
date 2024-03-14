@@ -11,8 +11,12 @@ import androidx.work.Data
 import com.google.gson.Gson
 import java.net.HttpURLConnection
 import java.net.URL
+import javax.inject.Inject
 
-class CatWorker(context: Context, parameter: WorkerParameters) : Worker(context, parameter) {
+class CatWorker @Inject constructor(
+    private val context: Context,
+    private val gson: Gson, private val parameter: WorkerParameters
+) : Worker(context, parameter) {
 
     private val link = "https://catfact.ninja/facts?limit=6"
     private val catFactsLiveData = MutableLiveData<Result>()

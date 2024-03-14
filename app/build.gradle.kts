@@ -1,7 +1,12 @@
+
 plugins {
+    id ("kotlin-kapt")
+    id ("kotlin-android")
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+
 }
+
 
 android {
     namespace = "com.example.services"
@@ -50,6 +55,25 @@ android {
 }
 
 dependencies {
+
+//    kapt ("com.google.dagger:dagger-compiler:2.50")
+//    implementation ("com.google.dagger:dagger:2.50")
+//
+//    implementation ("com.google.dagger:dagger-android:2.x")
+//    implementation ("com.google.dagger:dagger-android-support:2.x")
+//    kapt ("com.google.dagger:dagger-android-processor:2.x")
+
+//    val daggerVer = 2.27
+//    implementation("com.google.dagger:dagger:$daggerVer")
+//    implementation("com.google.dagger:dagger-android-support:$daggerVer")
+//    kapt("com.google.dagger:dagger-android-processor:$daggerVer")
+//    kapt("com.google.dagger:dagger-compiler:$daggerVer")
+
+    implementation ("com.google.dagger:dagger:2.24")
+    annotationProcessor ("com.google.dagger:dagger-compiler:2.24")
+    annotationProcessor ("com.google.dagger:dagger-android-processor:2.24")
+    implementation ("com.google.dagger:dagger-android-support:2.24'")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
